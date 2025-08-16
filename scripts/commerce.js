@@ -168,7 +168,21 @@ function initializeAdobeDataLayer(pageType) {
 export async function fetchIndex(indexFile, pageSize = 500) {
   const handleIndex = async (offset) => {
     const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${offset}`);
-    const json = await resp.json();
+    
+    // Check if the response is successful
+    if (!resp.ok) {
+      if (resp.status === 404) {
+        throw new Error(`Index file not found: ${indexFile}.json (404)`);
+      }
+      throw new Error(`Failed to fetch index: ${resp.status} ${resp.statusText}`);
+    }
+    
+    let json;
+    try {
+      json = await resp.json();
+    } catch (parseError) {
+      throw new Error(`Failed to parse index JSON: ${parseError.message}`);
+    }
 
     const newIndex = {
       complete: (json.limit + json.offset) === json.total,

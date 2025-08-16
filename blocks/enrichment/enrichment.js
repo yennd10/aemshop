@@ -32,13 +32,41 @@ export default async function decorate(block) {
       filters.positions = position;
     }
 
-    const index = await fetchIndex('enrichment/enrichment');
+    // Try to fetch enrichment data, but handle the case when it doesn't exist
+    let index;
+    try {
+      index = await fetchIndex('enrichment/enrichment');
+    } catch (fetchError) {
+      console.warn('Enrichment data not available:', fetchError.message);
+      // If enrichment data is not available, just remove the block and return
+      return;
+    }
+
+    // Check if index data exists and has the expected structure
+    if (!index || !index.data || !Array.isArray(index.data)) {
+      console.warn('No enrichment data available');
+      return;
+    }
+
     const matchingFragments = index.data
-      .filter((fragment) => Object.keys(filters).every((filterKey) => {
-        const values = JSON.parse(fragment[filterKey]);
-        return values.includes(filters[filterKey]);
-      }))
+      .filter((fragment) => {
+        try {
+          return Object.keys(filters).every((filterKey) => {
+            if (!fragment[filterKey]) return false;
+            const values = JSON.parse(fragment[filterKey]);
+            return values.includes(filters[filterKey]);
+          });
+        } catch (parseError) {
+          console.warn('Error parsing fragment data:', parseError);
+          return false;
+        }
+      })
       .map((fragment) => fragment.path);
+
+    if (matchingFragments.length === 0) {
+      console.log('No matching enrichment fragments found for current filters');
+      return;
+    }
 
     (await Promise.all(matchingFragments.map((path) => loadFragment(path))))
       .filter((fragment) => fragment)
@@ -61,7 +89,7 @@ export default async function decorate(block) {
         }
       });
   } catch (error) {
-    console.error(error);
+    console.error('Enrichment block error:', error);
   } finally {
     block.closest('.enrichment-wrapper')?.remove();
   }
