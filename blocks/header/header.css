@@ -15,6 +15,127 @@ header .nav-wrapper {
   border-bottom: 1px solid var(--color-neutral-300);
 }
 
+
+.wrapper-top-message {
+  background: #04263c;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 0;
+  font-family: var(--type-base-font-family);
+}
+
+.top-message {
+  margin: 0 auto;
+  max-width: 1248px;
+}
+
+.top-message-sub {
+  margin: 0 auto;
+  max-width: 1248px;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+/* Link styles in header */
+.wrapper-top-message a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+/* Animation for nav-wrapper .wrapper-top-message a */
+.nav-wrapper .wrapper-top-message {
+  width: 100%;
+}
+
+.nav-wrapper .wrapper-top-message .message-container {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  min-height: 30px;
+}
+
+.nav-wrapper .wrapper-top-message a {
+  color: #fff !important;
+  text-decoration: underline;
+  font-weight: 500;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease;
+  animation: slideInOut 3.5s infinite;
+}
+
+.nav-wrapper .wrapper-top-message a:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.nav-wrapper .wrapper-top-message a:nth-child(2) {
+  animation-delay: 1.5s;
+}
+
+.nav-wrapper .wrapper-top-message a:nth-child(3) {
+  animation-delay: 2.5s;
+}
+
+@keyframes slideInOut {
+  0% {
+      opacity: 0;
+      transform: translateX(100%);
+  }
+  10%,
+  20% {
+      opacity: 1;
+      transform: translateX(0);
+  }
+  30% {
+      opacity: 0;
+      transform: translateX(-100%);
+  }
+  100% {
+      opacity: 0;
+      transform: translateX(-100%);
+  }
+}
+
+.wrapper-top-message a:hover {
+  text-decoration: none;
+}
+
+.top-message a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.top-message a:hover {
+  text-decoration: none;
+}
+
+.top-message-sub a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 400;
+}
+
+.top-message-sub a:hover {
+  text-decoration: none;
+}
+
 header nav {
   box-sizing: border-box;
   display: grid;
@@ -267,7 +388,8 @@ header nav .nav-sections ul > li:empty {
     min-height: var(--desktop-panel-min-height);
     padding: var(--spacing-xbig);
     position: absolute;
-    top: var(--spacing-large);
+    /* top: var(--spacing-large); */
+    top: 140px;
     width: 100%;
   }
 

@@ -1,0 +1,42 @@
+.home-images-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.home-images-container .default-content-wrapper{
+  position: relative;
+  height: 600px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.home-images-container .default-content-wrapper {
+  position: relative;
+  height: 600px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.home-images-container .default-content-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.home-images-container .default-content-wrapper > p {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity; /* hỗ trợ cả transform và opacity */
+  transition: opacity 0.3s ease-out;
+  height: 1000px; /* Tăng chiều cao để có đủ không gian scroll cho 3 giai đoạn */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.home-images-container .default-content-wrapper > p img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

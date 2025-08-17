@@ -1,0 +1,65 @@
+/* Top Message Block Styles */
+.top-message {
+    padding: 20px;
+    margin: 20px 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.top-message-content {
+    margin-bottom: 15px;
+}
+
+.top-message h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.top-message p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.top-message a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.top-message a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.top-message ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.top-message li {
+    margin-bottom: 8px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .top-message {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .top-message h1 {
+        font-size: 20px;
+    }
+
+    .top-message p {
+        font-size: 14px;
+    }
+}

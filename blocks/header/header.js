@@ -453,9 +453,88 @@ export default async function decorate(block) {
     }
   });
 
+  // Top message
+  const mesWrapper = document.createElement("div");
+  mesWrapper.classList.add("wrapper-top-message");
+  const mesHeader = document.createElement("div");
+  mesHeader.classList.add("message-container");
+  mesWrapper.appendChild(mesHeader);
+
+  // Load content from Google Doc for header
+  const topMessageMeta = getMetadata("top-message");
+
+  if (!topMessageMeta) {
+    mesHeader.innerHTML = "";
+    return;
+  }
+
+  try {
+    // Load fragment from Google Doc
+    const topMessagePath = new URL(topMessageMeta, window.location).pathname;
+    console.log("Loading top message for header from:", topMessagePath);
+
+    const fragment = await loadFragment(topMessagePath);
+    if (!fragment) {
+      mesHeader.innerHTML = "";
+      return;
+    }
+
+    // Find content in fragment (with fallback)
+    const content =
+      fragment.querySelector(".default-content-wrapper") ||
+      fragment.querySelector(".content") ||
+      fragment;
+
+    if (!content) {
+      mesHeader.innerHTML = "";
+      return;
+    }
+
+    // Get HTML content from Google Doc
+    const htmlContent = content.innerHTML || content.outerHTML || "";
+
+    // Process and clean HTML content
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+
+    // Remove .button-container wrapper but keep inner content
+    tempDiv.querySelectorAll(".button-container").forEach((container) => {
+      const innerContent = container.innerHTML;
+      if (innerContent) {
+        container.replaceWith(
+          document.createRange().createContextualFragment(innerContent)
+        );
+      }
+    });
+
+    // Remove 'button' class from <a> tags
+    tempDiv.querySelectorAll("a.button").forEach((link) => {
+      link.classList.remove("button");
+    });
+
+    // Get cleaned HTML content
+    const finalHtmlContent = tempDiv.innerHTML;
+
+    if (finalHtmlContent.trim()) {
+      mesHeader.innerHTML = finalHtmlContent;
+      console.log(
+        "Successfully loaded HTML content for header from Google Doc"
+      );
+    } else {
+      mesHeader.innerHTML = "";
+      console.log("No content found in Google Doc for header");
+    }
+  } catch (error) {
+    console.error("Error loading content for header:", error);
+    mesHeader.innerHTML = "";
+  }
+
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+  
+  // Add top message to the beginning of nav-wrapper
+  navWrapper.prepend(mesWrapper);
   block.append(navWrapper);
 
   navWrapper.addEventListener('mouseout', (e) => {

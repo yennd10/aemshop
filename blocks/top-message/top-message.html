@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top Message Block</title>
+    <link rel="stylesheet" href="top-message.css" />
+  </head>
+  <body>
+    <!-- Top Message Block -->
+    <div class="top-message block" data-block-name="top-message">
+      <!-- Content will be loaded from Google Doc -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../scripts/aem.js" type="module"></script>
+    <script type="module">
+      import decorate from "./top-message.js";
+
+      // Wait for DOM to load
+      document.addEventListener("DOMContentLoaded", () => {
+        const block = document.querySelector(".top-message.block");
+        if (block) {
+          console.log("Loading top message block...");
+          decorate(block);
+        } else {
+          console.error("Top message block not found");
+        }
+      });
+    </script>
+  </body>
+</html>
