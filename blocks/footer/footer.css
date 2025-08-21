@@ -257,14 +257,3 @@ footer .footer p {
     }
 }
 
-/* Accessibility Improvements */
-.block-footer-links a:focus,
-.block-copyright a:focus {
-    outline: 2px solid var(--color-brand-600);
-    outline-offset: 2px;
-}
-
-.storeview-switcher-button:focus {
-    outline: 2px solid var(--color-brand-600);
-    outline-offset: 2px;
-}

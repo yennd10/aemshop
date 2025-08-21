@@ -275,16 +275,17 @@ button {
 }
 
 /* links */
-a:not(.dropin-design a) {
+/* a:not(.dropin-design a) */
+a {
   color: var(--color-brand-500);
   font: var(--type-body-1-strong-font);
   letter-spacing: var(--type-body-1-strong-letter-spacing);
   text-decoration: none;
   overflow-wrap: break-word;
 }
-
-a:not(.dropin-design a):hover {
-  color: var(--color-brand-600);
+/* a:not(.dropin-design a):hover */
+a:hover {
+  color: #dc963a;
   text-decoration: underline;
 }
 
