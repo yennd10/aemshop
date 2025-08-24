@@ -80,8 +80,16 @@ export default async function decorate(block) {
             <div class="product-details__buttons__add-to-wishlist"></div>
           </div>
         </div>
-        <div class="product-details__description"></div>
-        <div class="product-details__attributes"></div>
+        <div class="attributes-products__wrapper prduct-tabs">
+          <div class="description-title product-tab">
+            <h3 class="product-tab-title">Description</h3>
+             <div class="product-details__description product-tab-content"></div>
+          </div>          
+          <div class="attributes-title product-tab">
+            <h3 class="product-tab-title">Attributes</h3>
+            <div class="product-details__attributes product-tab-content"></div>
+          </div>
+        </div>
       </div>
     </div>
   `);
@@ -100,6 +108,39 @@ export default async function decorate(block) {
   const $attributes = fragment.querySelector('.product-details__attributes');
 
   block.replaceChildren(fragment);
+
+  // Initialize collapsible tabs functionality
+  const initCollapsibleTabs = () => {
+    const tabTitles = document.querySelectorAll('.product-tab-title');
+    
+    tabTitles.forEach((title) => {
+      title.addEventListener('click', () => {
+        const tab = title.closest('.product-tab');
+        const content = tab.querySelector('.product-tab-content');
+        const isActive = tab.classList.contains('active');
+        
+        // Close all tabs
+        document.querySelectorAll('.product-tab').forEach(t => {
+          t.classList.remove('active');
+          t.querySelector('.product-tab-content').style.maxHeight = '0';
+        });
+        
+        // Open clicked tab if it wasn't active
+        if (!isActive) {
+          tab.classList.add('active');
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
+    
+    // Open first tab by default
+    const firstTab = document.querySelector('.product-tab');
+    if (firstTab) {
+      firstTab.classList.add('active');
+      const firstContent = firstTab.querySelector('.product-tab-content');
+      firstContent.style.maxHeight = firstContent.scrollHeight + 'px';
+    }
+  };
 
   const gallerySlots = {
     CarouselThumbnail: (ctx) => {
@@ -148,7 +189,8 @@ export default async function decorate(block) {
 
     // Gallery (Desktop)
     pdpRendered.render(ProductGallery, {
-      controls: 'thumbnailsColumn',
+      // controls: 'thumbnailsColumn',
+      controls: 'thumbnailsRow',
       arrows: true,
       peak: true,
       gap: 'small',
@@ -288,6 +330,9 @@ export default async function decorate(block) {
     // update add to cart button disabled state based on product selection validity
     addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
   }, { eager: true });
+
+  // Initialize collapsible tabs after all content is rendered
+  initCollapsibleTabs();
 
   // Handle option changes
   events.on('pdp/values', () => {

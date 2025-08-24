@@ -122,5 +122,61 @@ export default async function decorate(block) {
         },
       },
     })($productList),
-  ]);
+  ]).then(() => {
+    // Function to add class and brand name
+    const addClassAndBrand = (card) => {
+      card.classList.add('product-item');
+      
+      // Add brand name span before title
+      const titleElement = card.querySelector('.dropin-product-item-card__title');
+      if (titleElement && !titleElement.previousElementSibling?.textContent?.includes('Brand Name')) {
+        const brandSpan = document.createElement('span');
+        brandSpan.textContent = 'Brand Name';
+        brandSpan.style.gridColumn = '1/3';
+        titleElement.parentNode.insertBefore(brandSpan, titleElement);
+      }
+    };
+
+    // Use MutationObserver to monitor when new product cards are added
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // Check newly added node
+            if (node.classList && node.classList.contains('dropin-product-item-card')) {
+              addClassAndBrand(node);
+            }
+            // Check child elements
+            const productCards = node.querySelectorAll('.dropin-product-item-card');
+            productCards.forEach(card => {
+              addClassAndBrand(card);
+            });
+          }
+        });
+      });
+    });
+
+    // Start observing the entire document
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    // Add class and brand name to existing cards
+    const addToExistingCards = () => {
+      const existingCards = document.querySelectorAll('.dropin-product-item-card');
+      existingCards.forEach(card => {
+        addClassAndBrand(card);
+      });
+    };
+
+    // Run immediately
+    addToExistingCards();
+    
+    // Run again after 1 second to ensure all are captured
+    setTimeout(addToExistingCards, 1000);
+    
+    // Run again after 3 seconds
+    setTimeout(addToExistingCards, 3000);
+  });
 }
